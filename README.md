@@ -68,6 +68,23 @@ Play anything. The bars react to the whole system mix.
 | `q` | quit |
 | `Ctrl+C` | quit |
 
+## Configuration
+
+sysviz reads `~/.config/sysviz/config.toml` at start. Without the file it uses the defaults below. Restart sysviz after changing it.
+
+```toml
+bars = 64              # number of bars, 8 to 128
+bar_gap = 1            # empty columns between bars, 0 to 16
+framerate = 30         # frames per second, 15 to 120
+
+color_mode = "solid"   # "solid" or "gradient"
+color = "#ffffff"      # colour for solid mode
+color_low = "#ffffff"  # bottom of the bars, gradient mode
+color_high = "#ffffff" # top of the bars, gradient mode
+```
+
+Values outside the range are clamped. Put hex colours in quotes (`color = "#ffffff"`), otherwise the value is ignored. Unknown keys and invalid values are ignored too.
+
 On first launch macOS asks for permission to capture system audio. Allow it for the terminal app you run sysviz from, then start it again.
 
 ## Build and run without installing

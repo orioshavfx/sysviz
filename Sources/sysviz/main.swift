@@ -1,12 +1,15 @@
 import Foundation
 import CoreAudio
 
+// Настройки из ~/.config/sysviz/config.toml (см. Config.swift).
+let config = Config.load()
+
 let fftSize = 2048
-let bandCount = 64
-let barGap = 1  // пустых колонок между полосами
+let bandCount = config.bars
+let barGap = config.barGap  // пустых колонок между полосами
 let minFrequency = 40.0
 let maxFrequency = 16_000.0
-let frameRate = 30.0
+let frameRate = Double(config.framerate)
 
 // Фиксированная шкала в dB: всё, что тише dbFloor, даёт 0, громче dbCeil — полную высоту.
 let dbFloor: Float = -75
@@ -80,18 +83,26 @@ final class Analyzer {
 
 let blocks = ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
 
-/// Монохромная отрисовка: белые столбики на фоне терминала, на всю высоту окна.
+/// Отрисовка столбиков на всю высоту окна. Цвет из конфига:
+/// solid — один цвет, gradient — от colorLow внизу до colorHigh вверху, по строкам.
 func render(bars: [Float], cols: Int, rows: Int) -> String {
     let barRows = max(rows, 1)
     let count = bars.count
     let totalEighths = barRows * 8
-    var out = "\u{1b}[H\u{1b}[38;2;255;255;255m"
+    var out = "\u{1b}[H"
+    if config.colorMode == .solid {
+        out += config.color.ansiForeground
+    }
 
     // Границы полос в колонках: сумма ширин ровно равна cols, остаток не теряется.
     let edges = (0...count).map { $0 * cols / count }
 
     for row in 0..<barRows {
         let fromBottom = barRows - 1 - row
+        if config.colorMode == .gradient {
+            let t = barRows > 1 ? Double(fromBottom) / Double(barRows - 1) : 0
+            out += config.colorLow.mixed(with: config.colorHigh, t).ansiForeground
+        }
         for (i, bar) in bars.enumerated() {
             let width = edges[i + 1] - edges[i]
             // Промежуток между полосами; у узкой полосы (1 колонка) промежутка нет,
