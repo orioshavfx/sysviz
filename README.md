@@ -4,7 +4,7 @@
 
 **A macOS cava alternative: a terminal audio visualizer for whatever your Mac is playing.**
 
-Monochrome bars, 64 logarithmic bands, zero drivers, zero config.
+Monochrome bars, 64 logarithmic bands, zero drivers. No setup needed, and an optional config file for the details.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-white.svg)](LICENSE)
 ![Platform](https://img.shields.io/badge/macOS-14.2%2B-black)
@@ -20,7 +20,7 @@ Monochrome bars, 64 logarithmic bands, zero drivers, zero config.
 
 [cava](https://github.com/karlstav/cava) is the classic terminal audio visualizer and has a lot of options. On macOS 14.2+ it can read system output directly, but only in builds with Core Audio tap support. Otherwise it needs a loopback device such as BlackHole.
 
-sysviz is a smaller tool built around the same tap from the start. There is no loopback to install, no config file to write, and one fixed look: white bars on your terminal background. If you want that and nothing else, it's the shorter path. If you want themes and fine control, cava is the better tool.
+sysviz is a smaller tool built around the same tap from the start. There is no loopback to install. Without a config file you get one look: white bars on your terminal background. A config file adds bar count, gap, frame rate and colours. If you want that and nothing else, it's the shorter path. If you want themes and fine control, cava is the better tool.
 
 ## Features
 
